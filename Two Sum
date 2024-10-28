@@ -1,0 +1,134 @@
+Two Sum
+
+Difficulty: Easy
+
+Problem:
+Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+You can return the answer in any order.
+ 
+Example 1:
+Input: nums = [2,7,11,15], target = 9
+Output: [0,1]
+Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].
+Example 2:
+Input: nums = [3,2,4], target = 6
+Output: [1,2]
+Example 3:
+Input: nums = [3,3], target = 6
+Output: [0,1]
+ 
+Constraints:
+    • 2 <= nums.length <= 104
+    • -109 <= nums[i] <= 109
+    • -109 <= target <= 109
+    • Only one valid answer exists.
+-
+
+Code: 
+
+/* It's just a brute force approach, it's time complexity is O(N^2). Try to reduce it using Hashing...
+
+T.C. = O(n^2)
+A.S. = O(1)
+
+class Solution {
+public:
+vector<int> twoSum(vector<int>& nums, int target) {
+
+int n = nums.size();
+int i,j,sum = 0;
+for(int i=0; i<n-1; i++)
+{
+for(int j=i+1; j<n; j++)
+{
+sum = nums[i] + nums[j];
+if(sum==target)
+{
+return{i,j};
+}
+}
+}
+
+return{};
+}
+}; */
+
+/* This Logic is useful when it has been asked asked for boolean whether there is a pair of elements in the array whose sum is equal to target or not
+
+Why this Approach is not good for this question?
+- Cause here we need to find exact index of integers while in two pointer approach first here we need to sort the array due to which finding exact index is not possible.
+
+T.C = O(nlogn)
+A.S = O(1)
+
+Note: Same thing we can also implement using Binary Search, check GFG last solution of two sum for ref.
+
+class Solution {
+public:
+vector<int> twoSum(vector<int>& nums, int target) {
+
+sort(nums.begin(), nums.end());
+
+//using Two Pointer Approach
+int left = 0, right = nums.size()-1;
+
+while(left<right)
+{
+int sum = nums[left] + nums[right];
+
+if(sum==target)
+{
+return{left,right};
+}
+
+else if(sum<target)
+{
+left++;
+}
+
+else
+{
+right--;
+}
+
+}
+
+return{};
+}
+};
+
+*/
+
+/* Using Hashing
+
+Time Complexity: O(n), for single iteration over the array
+Auxiliary Space: O(n), for hashmap
+
+*/
+/*
+mpp.find(MoreNeeded) looks for the complement in the map.
+!= mpp.end() checks if the complement exists.
+If the complement is found, we can return the indices of the two numbers that sum up to the target.
+*/
+
+class Solution {
+public:
+vector<int> twoSum(vector<int>& nums, int target) {
+
+unordered_map<int,int> mpp;
+for(int i=0; i<nums.size(); i++)
+{
+int num = nums[i];
+int MoreNeeded = target - num;
+if(mpp.find(MoreNeeded) != mpp.end())
+{
+return{mpp[MoreNeeded], i};
+}
+
+mpp[num] = i;
+}
+
+return{-1,-1};
+}
+};
